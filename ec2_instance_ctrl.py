@@ -9,7 +9,12 @@ if(len(sys.argv) != 2):
   print(sys.argv[0] + ' [start or stop] [InstanceID]')
   sys.exit()
 
-session = Session(profile_name='default')
+try:
+  session = Session(profile_name=sys.argv[1])
+except Exception as e:
+  print('\n' + 'Profile Errors: ' + str(e) + '\n')
+  sys.exit()
+
 region = 'ap-northeast-1'
 client = session.client('ec2', region_name=region)
 

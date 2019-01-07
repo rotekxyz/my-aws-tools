@@ -8,7 +8,12 @@ if(len(sys.argv) != 2):
   print(sys.argv[0] + ' [aws cli profile name]')
   sys.exit()
 
-session = Session(profile_name=sys.argv[1])
+try:
+  session = Session(profile_name=sys.argv[1])
+except Exception as e:
+  print('\n' + 'Profile Errors: ' + str(e) + '\n')
+  sys.exit()
+
 iam = session.client('iam')
 
 
