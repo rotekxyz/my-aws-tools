@@ -35,10 +35,8 @@ def get_vpc_id():
 
 def get_security_group(vpc_id):
 
-  sec_rules_result = []
   result = []
   dict_list = {}
-  sec_rules = {}
 
   res = client.describe_security_groups(Filters=[{'Name': 'vpc-id', 'Values': [vpc_id]}])
   for sg_lists in res['SecurityGroups']:
