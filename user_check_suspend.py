@@ -56,6 +56,17 @@ def check_console_login(username):
   return check_result
 
 
+def suspend_user(username):
+    update_res = []
+    delete_res = iam.delete_login_profile(UserName=username)
+    update_res.append(delete_res)
+    check_access_keys = iam.list_access_keys(UserName=username)
+    for key_lists in check_access_keys['AccessKeyMetadata']:
+      res = iam.update_access_key(UserName=username, AccessKeyId=key_lists['AccessKeyId'], Status='Inactive')
+      update_res.append(res)
+    return update_res
+
+
 def main():
   print('### check start.')
   for user_list in get_users():
@@ -73,7 +84,8 @@ def main():
       if until_days <= res_date:
         print(user_list + ' is Console Login YES. but have not set MFA for more than ' +
               str(res_date)  + 'days')
-      #print(user_list + ' ' + str((now_date-create_date).days))
+        result = suspend_user(user_list)
+        #print(result)
     else:
       True
   print('### Finish')
